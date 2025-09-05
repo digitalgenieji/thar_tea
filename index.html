@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Royal Thar Tea</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+  :root {
+    --dark-brown: #3e1f12;
+    --medium-brown: #7c4e1e;
+    --light-brown: #c99a58;
+    --background-beige: #f2e4c4;
+    --green-tea-leaf: #395826;
+    --white: #fffaf2;
+    --gold: #d4af37;
+    --soft-gold: #f5e1a4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+  body {
+    font-family: 'Merriweather', serif;
+    background: var(--background-beige);
+    color: var(--dark-brown);
+    overflow-x: hidden;
+  }
+  /* HTML: <div class="loader"></div> */
+.loader {
+  height: 80px;
+  aspect-ratio: 1;
+  padding: 10px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  position: relative;
+  mask: conic-gradient(#000 0 0) content-box exclude,conic-gradient(#000 0 0);
+  filter: blur(12px);
+}
+.loader:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(#46050500 0 5%,#C02942,#0000 20% 50%);
+  animation: l3 1.5s linear infinite;
+}
+@keyframes l3 {
+  to {rotate: 1turn}
+}
+  /* STICKY NAVBAR */
+  nav {
+    position: sticky;
+    top: 0;
+    background: var(--dark-brown);
+    border-bottom: 3px solid var(--gold);
+    z-index: 1000;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+  nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding: 14px 0;
+    list-style: none;
+  }
+  nav a {
+    color: var(--soft-gold);
+    font-weight: bold;
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  nav a:hover {
+    color: var(--gold);
+  }
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 25px;
+    background: linear-gradient(135deg, var(--dark-brown), #2d120b);
+    color: var(--soft-gold);
+    font-family: 'Playfair Display', serif;
+    border-bottom: 4px solid var(--gold);
+    letter-spacing: 1px;
+  }
+  header img {
+    height: 70px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0px 2px 6px rgba(0,0,0,0.4));
+  }
+  header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+  }
+  header p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+  }
+
+  /* HERO SECTION */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    padding: 80px 20px;
+    background: linear-gradient(145deg, #f8e8c7, #e3c07a);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-text {
+    max-width: 580px;
+    animation: fadeUp 1.2s ease forwards;
+  }
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    color: var(--dark-brown);
+    margin-bottom: 15px;
+    position: relative;
+  }
+  .hero-text h1::after {
+    content: '';
+    display: block;
+    width: 90px;
+    height: 3px;
+    background: var(--gold);
+    margin-top: 10px;
+    border-radius: 2px;
+  }
+  .hero-text p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    opacity: 0.9;
+  }
+  .cta-btn {
+    margin-top: 25px;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--medium-brown), var(--green-tea-leaf));
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+  }
+  .cta-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  }
+
+  /* PRODUCT ANIMATION */
+  .hero-image img {
+    max-width: 360px;
+    border-radius: 20px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.3);
+    background: var(--white);
+    padding: 15px;
+    border: 3px solid var(--gold);
+    animation: float 6s ease-in-out infinite, fadeUp 1.5s ease forwards;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+  }
+  @media (min-width: 768px) {
+    .hero {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      text-align: left;
+    }
+  }
+
+  /* ABOUT + STORY */
+  .about-story {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    padding: 70px 20px;
+    background: var(--light-brown);
+    border-radius: 20px;
+    max-width: 1100px;
+    margin: 80px auto;
+    box-shadow: 0 12px 30px rgba(60, 40, 20, 0.3);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+  }
+  .about-story.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .about-story h2 {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--green-tea-leaf);
+    letter-spacing: 1px;
+  }
+  .about-story-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .about-box {
+    flex: 1;
+    padding: 25px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 14px;
+    transition: transform 0.3s ease;
+  }
+  .about-box:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.4);
+  }
+  @media (min-width: 768px) {
+    .about-story-content { flex-direction: row; }
+  }
+
+  /* CONTACT */
+ .contact-container {
+    background: #fff9f2;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    font-family: 'Merriweather', serif;
+  }
+
+  .contact-container h2 {
+    color: #5c2c15;
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+
+  .contact-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contact-container input,
+  .contact-container textarea {
+    padding: 12px;
+    border: 1px solid #d4b996;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .contact-container textarea {
+    resize: none;
+    height: 120px;
+  }
+
+  .contact-container button {
+    padding: 12px;
+    border: none;
+    background: #8b4513;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .contact-container button:hover {
+    background: #5c2c15;
+  }
+
+  /* MODAL */
+  .modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+  }
+  .modal.active {
+    opacity: 1; visibility: visible;
+  }
+  .modal-content {
+    background: var(--white);
+    padding: 35px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+  .close-btn {
+    margin-top: 18px;
+    padding: 10px 20px;
+    background: var(--medium-brown);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .close-btn:hover {
+    background: var(--green-tea-leaf);
+  }
+    body {
+    background: #fff8f0;
+    margin: 0;
+    padding: 0;
+    font-family: 'Merriweather', serif;
+  }
+
+  /* Contact Form */
+  .contact-container {
+    background: #fff9f2;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: 50px auto;
+    text-align: center;
+    animation: fadeIn 1.2s ease-in-out;
+  }
+
+  .contact-container h2 {
+    color: #5c2c15;
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+
+  .contact-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contact-container input,
+  .contact-container textarea {
+    padding: 12px;
+    border: 1px solid #d4b996;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .contact-container textarea {
+    resize: none;
+    height: 120px;
+  }
+
+  .contact-container button {
+    padding: 12px;
+    border: none;
+    background: #8b4513;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .contact-container button:hover {
+    background: #5c2c15;
+  }
+
+  /* Footer */
+  .site-footer {
+    background: #5c2c15;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+
+  .site-footer a {
+    color: #ffd9b3;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+
+  .site-footer a:hover {
+    text-decoration: underline;
+  }
+  /* Popup Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--white);
+  padding: 35px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  transform: scale(0.8);
+  opacity: 0;
+  animation: popupFade 0.4s ease forwards;
+}
+
+.popup-logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 15px;
+  animation: logoPop 0.6s ease forwards;
+}
+
+.close-btn {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.close-btn:hover {
+  background: #b28c35;
+}
+
+@keyframes popupFade {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes logoPop {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+  /* Animation */
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="home">
+  <img src="Regal Camel Emblem Logo.png" alt="Logo">
+  <h1>ROYAL THAR TEA</h1>
+  <p>Brewing Royalty in Every Cup</p>
+</header>
+
+<!-- NAVBAR -->
+<nav>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#heritage">Heritage</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Experience The Majesty</h1>
+    <p>A royal blend of bold Assam tea and Rajasthan’s desert heritage, crafted for those who savor every sip.</p>
+    <button class="cta-btn">Shop Now</button>
+  </div>
+  <div class="hero-image">
+    <img src="pack.png" alt="Royal Thar Tea Packaging">
+  </div>
+</section>
+
+<!-- ABOUT + STORY -->
+<section class="about-story" id="heritage">
+  <h2>Our Heritage</h2>
+  <div class="about-story-content">
+    <div class="about-box">
+      <h3>About Royal Thar Tea</h3>
+      <p>Royal Thar Tea brings the essence of Rajasthan's golden sands to your cup. Using the finest Assam tea leaves, we create a blend that honors our cultural heritage while offering a bold and smooth flavor for modern tastes.</p>
+    </div>
+    <div class="about-box">
+      <h3>Our Story</h3>
+      <p>Born from a passion for authentic Indian tea, Royal Thar Tea started as a small family endeavor and has grown into a symbol of quality and tradition. Every cup you enjoy is part of a journey that began in the heart of the Thar Desert.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-container">
+  <h2>Contact Us</h2>
+  <form>
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <textarea placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</div>
+
+<!-- Thank You Modal -->
+<div class="modal" id="thankYouModal">
+  <div class="modal-content">
+    <img src="Regal Camel Emblem Logo.png" alt="Royal Thar Tea Logo" class="popup-logo">
+    <h3>Thank You!</h3>
+    <p>Your message has been sent successfully.</p>
+    <button class="close-btn" onclick="document.getElementById('thankYouModal').classList.remove('active')">Close</button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>© 2025 Royal Thar Tea | Brewing Royalty in Every Cup</p>
+  <p>Follow us on  
+    <a href="#">Instagram</a> |  
+    <a href="#">Facebook</a> |  
+    <a href="#">Twitter</a>
+  </p>
+</footer>
+<script>
+  // Form modal
+  const form = document.querySelector('form');
+  const modal = document.getElementById('thankYouModal');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    modal.classList.add('active');
+    form.reset();
+  });
+
+  // Scroll reveal
+  const revealElements = document.querySelectorAll('.about-story, .contact-container');
+  const revealOnScroll = () => {
+    const triggerBottom = window.innerHeight * 0.85;
+    revealElements.forEach(el => {
+      const boxTop = el.getBoundingClientRect().top;
+      if (boxTop < triggerBottom) {
+        el.classList.add('visible');
+      }
+    });
+  };
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
+</script>
+
+</body>
+</html>
